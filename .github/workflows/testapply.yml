@@ -171,8 +171,11 @@ jobs:
     - name: Terraform Ouput
       id: tf-apply
       run: |
+        delimiter="$(openssl rand -hex 8)"
         rsakey=$(terraform output -raw key_prv)
-        echo "PrivateKey=$rsakey" >> $GITHUB_OUTPUT
+        echo "PrivateKey<<${delimiter}" >> $GITHUB_OUTPUT
+        echo $rsakey >> $GITHUB_OUTPUT
+        echo "${delimiter}" >> $GITHUB_OUTPUT
       working-directory: ./infrastructure 
 
     - run: |
