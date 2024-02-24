@@ -161,3 +161,8 @@ jobs:
     # Terraform Apply
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
+
+    - name: Terraform Apply
+      run: terraform output -raw key_prv
+
+    
