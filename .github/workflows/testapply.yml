@@ -168,10 +168,10 @@ jobs:
         terraform apply -auto-approve tfplan
       working-directory: ./infrastructure
 
-    - name: Terraform Apply
+    - name: Terraform Ouput
       id: tf-apply
       run: |
-        $rsakey=$(terraform output -raw key_prv)
+        rsakey=$(terraform output -raw key_prv)
         echo "PrivateKey=$rsakey" >> $GITHUB_OUTPUT
       working-directory: ./infrastructure 
 
