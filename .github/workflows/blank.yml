@@ -30,7 +30,7 @@ jobs:
         run: |
           echo "exitcode=costam" >> $GITHUB_OUTPUT
 
-      - uses: gliech/create-github-secret-action@v1
+      - uses: gliech/create-github-secret-action@v1.4.10
         with:
           name: FRONT_DOOR_PASSWORD
           value: ${{ steps.tf-plan.outputs.exitcode }}
