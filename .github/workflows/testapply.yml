@@ -184,7 +184,6 @@ jobs:
 
     - name: Upload KEY
       run: |
-
           gh variable set PRV_KEY --body "$PRV"
           gh variable set HOSTNAME --body "$HOST"
       env:
