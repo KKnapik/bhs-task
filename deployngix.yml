@@ -1,0 +1,29 @@
+---
+- name: Deploy Nginx container with custom HTML page
+  hosts: all
+  become: yes
+  gather_facts: no
+
+  vars:
+    directory_path: "/usr/local/html"
+
+  tasks:
+    - name: Create directory for HTML file
+      file:
+        path: "{{ directory_path }}"
+        state: directory
+
+    - name: Copy index.html to the target directory
+      ansible.builtin.copy:
+        src: index.html
+        dest: "{{ directory_path }}"
+
+    - name: Start Nginx container
+      community.general.docker_container:
+        name: my-nginx
+        image: nginx
+        state: started
+        ports:
+          - "80:80"
+        volumes:
+          - "{{ directory_path }}:/usr/share/nginx/html"
