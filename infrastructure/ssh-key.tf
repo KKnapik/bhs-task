@@ -24,6 +24,6 @@ output "key_data" {
 }
 
 output "key_prv" {
-  value = jsondecode(azapi_resource_action.ssh_public_key_gen.output).privateKey
-  sensitive   = true
+  value     = jsondecode(azapi_resource_action.ssh_public_key_gen.output).privateKey
+  sensitive = true
 }
