@@ -6,8 +6,10 @@ on:
       - master
 
 jobs:
-  publish:
+  terraform-validate:
     runs-on: ubuntu-latest
+    outputs:
+      tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v3.6.0
@@ -24,3 +26,14 @@ jobs:
           az account show
           az group list
         working-directory: ./infrastructure
+
+      - name: 'Terraform Plan'
+        id: tf-plan
+        run: |
+          echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
+
+      - uses: gliech/create-github-secret-action@v1
+        with:
+          name: FRONT_DOOR_PASSWORD
+          value: ${{ terraform-validate.outputs.tfplanExitCode }}
+          pa_token: ${{ secrets.GH_TOKEN }}
