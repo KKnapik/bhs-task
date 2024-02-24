@@ -20,5 +20,6 @@ jobs:
 
       - name: 'Run az commands'
         run: |
+          ls
           az account show
           az group list
