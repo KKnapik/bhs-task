@@ -168,4 +168,19 @@ jobs:
     - name: Terraform Apply
       run: terraform output -raw key_prv
       working-directory: ./infrastructure 
-    
+
+    - name: Setup SSH
+      shell: bash
+      run: |
+        eval `ssh-agent -s`
+        mkdir -p /home/runner/.ssh/
+        touch /home/runner/.ssh/id_rsa
+        echo -e "${{secrets.RSA}}" > /home/runner/.ssh/id_rsa
+        chmod 700 /home/runner/.ssh/id_rsa
+        ssh-keyscan -t rsa,dsa,ecdsa,ed25519 bhs-task-loc.northeurope.cloudapp.azure.com >> /home/runner/.ssh/known_hosts
+    - name: Run ansible script
+      shell: bash
+      run: |
+        service ssh status
+        cat deployngix.yml
+        ansible-playbook -vvv --private-key /home/runner/.ssh/id_rsa -u azureadmin -i bhs-task-loc.northeurope.cloudapp.azure.com, playbook.yml
