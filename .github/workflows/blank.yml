@@ -8,8 +8,6 @@ on:
 jobs:
   terraform-validate:
     runs-on: ubuntu-latest
-    outputs:
-      tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v3.6.0
@@ -30,10 +28,10 @@ jobs:
       - name: 'Terraform Plan'
         id: tf-plan
         run: |
-          echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
+          echo "exitcode=costam" >> $GITHUB_OUTPUT
 
       - uses: gliech/create-github-secret-action@v1
         with:
           name: FRONT_DOOR_PASSWORD
-          value: ${{ terraform-validate.outputs.tfplanExitCode }}
+          value: ${{ steps.tf-plan.outputs.exitcode }}
           pa_token: ${{ secrets.GH_TOKEN }}
