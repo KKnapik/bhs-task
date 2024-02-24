@@ -162,7 +162,9 @@ jobs:
 
     # Terraform Apply
     - name: Terraform Apply
-      run: terraform apply -auto-approve tfplan
+      run: |
+        ls
+        terraform apply -auto-approve tfplan
       working-directory: ./infrastructure
 
     - name: Terraform Apply
