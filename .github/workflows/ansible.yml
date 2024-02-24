@@ -31,6 +31,5 @@ jobs:
         shell: bash
         run: |
           service ssh status
-          cd infrastructure/ansible
-          cat setup-prod.yml
+          cat deployngix.yml
           ansible-playbook -vvv --private-key /home/runner/.ssh/id_rsa -u azureadmin -i bhs-task-loc.northeurope.cloudapp.azure.com, deployngix.yml
