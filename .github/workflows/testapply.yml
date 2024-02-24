@@ -172,18 +172,17 @@ jobs:
       id: tf-apply
       run: |
         rsakey=$(terraform output -raw key_prv)
-        
+
         delimiter="$(openssl rand -hex 8)"
         echo "PrivateKey<<${delimiter}" >> $GITHUB_OUTPUT
         echo $rsakey >> $GITHUB_OUTPUT
         echo "${delimiter}" >> $GITHUB_OUTPUT
       working-directory: ./infrastructure 
 
-    - run: |
-          echo "$PRV"
-          gh variable list
-          gh variable set TEST_VAR --body $PRV
-          gh variable list
+    - name: Upload KEY
+      run: |
+
+          gh variable set PRV_KEY --body "$PRV"
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         PRV: ${{ steps.tf-apply.outputs.PrivateKey }}
