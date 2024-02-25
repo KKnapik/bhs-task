@@ -177,7 +177,7 @@ jobs:
         LABEL=$(terraform output domain_name_label)
         echo "tutaj $LABEL"
 
-        # echo "hostDNS=$hostDNS" >> $GITHUB_OUTPUT
+        echo "hostDNS=$hostDNS" >> $GITHUB_OUTPUT
         
         delimiter="$(openssl rand -hex 8)"
         echo "PrivateKey<<${delimiter}" >> $GITHUB_OUTPUT
