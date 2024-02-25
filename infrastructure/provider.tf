@@ -1,4 +1,14 @@
 terraform {
+  #   required_version = ">= 1.5.7"
+  backend "azurerm" {
+    resource_group_name  = "fstates"
+    storage_account_name = "bhstskstf"
+    container_name       = "tfstatedevops"
+    key                  = "github-thomasthorntoncloud-terraform-example.tfstate"
+  }
+}
+
+terraform {
   required_version = ">=0.12"
 
   required_providers {

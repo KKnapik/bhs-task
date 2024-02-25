@@ -1,0 +1,35 @@
+name: Deployment Nginx
+# Controls when the workflow will run
+# Triggers the workflow on push or pull request events but only for the "master" branch
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**.html'
+  # Allows you to run this workflow manually from the Actions tab
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  run-playbooks:
+    runs-on: ubuntu-latest
+    env: 
+      DNSNAME: "${{ vars.DNSNAME }}.northeurope.cloudapp.azure.com"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        shell: bash
+        run: |
+          eval `ssh-agent -s`
+          mkdir -p /home/runner/.ssh/
+          touch /home/runner/.ssh/id_rsa
+          echo -e "${{secrets.RSA}}" > /home/runner/.ssh/id_rsa
+          chmod 700 /home/runner/.ssh/id_rsa
+          ssh-keyscan -t rsa,dsa,ecdsa,ed25519 $DNSNAME >> /home/runner/.ssh/known_hosts
+      - name: Run ansible script
+        shell: bash
+        run: |
+          service ssh status
+          cat deployngix.yml
+          ansible-playbook -vvv --private-key /home/runner/.ssh/id_rsa -u azureadmin -i $DNSNAME, deployngix.yml
