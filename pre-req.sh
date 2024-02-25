@@ -28,3 +28,5 @@ az storage account create --name "$storageAccountName" --resource-group "$resour
  
 # Create Storage Account Container
 az storage container create --name "$containerName" --account-name "$storageAccountName"
+
+#test
