@@ -178,7 +178,7 @@ jobs:
         touch /home/runner/.ssh/id_rsa
         echo -e "${{secrets.RSA}}" > /home/runner/.ssh/id_rsa
         chmod 700 /home/runner/.ssh/id_rsa
-        echo "host name DNSNAME"
+        echo "host name $DNSNAME"
         ssh-keyscan -t rsa,dsa,ecdsa,ed25519 $DNSNAME >> /home/runner/.ssh/known_hosts
     - name: Run ansible script
       shell: bash
