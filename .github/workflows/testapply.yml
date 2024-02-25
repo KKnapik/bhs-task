@@ -173,10 +173,11 @@ jobs:
       id: tf-apply
       run: |
         rsakey=$(terraform output -raw key_prv)
-        hostDNS=$(terraform output -raw domain_name_label)
-        echo "$hostDNS"
+        terraform output -raw domain_name_label
+        LABEL=$(terraform output -raw domain_name_label)
+        echo "tutaj $LABEL"
 
-        echo "hostDNS=$hostDNS" >> $GITHUB_OUTPUT
+        # echo "hostDNS=$hostDNS" >> $GITHUB_OUTPUT
         
         delimiter="$(openssl rand -hex 8)"
         echo "PrivateKey<<${delimiter}" >> $GITHUB_OUTPUT
