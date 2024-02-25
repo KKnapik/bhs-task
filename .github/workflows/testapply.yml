@@ -73,7 +73,7 @@ jobs:
       id: tf-plan
       run: |
         export exitcode=0
-        terraform plan -detailed-exitcode -no-color -out tfplan -var="pubKey={{ secrets.RSA_PUB }}" || export exitcode=$?
+        terraform plan -detailed-exitcode -no-color -out tfplan -var="pubKey=${{ secrets.RSA_PUB }}" || export exitcode=$?
 
         echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
         
