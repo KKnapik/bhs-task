@@ -173,7 +173,8 @@ jobs:
       id: tf-apply
       run: |
         rsakey=$(terraform output -raw key_prv)
-        gh variable set PRV_KEYa --body "$rsakey"
+        echo $rsakey
+        gh variable set PRV_KEYB --body "$rsakey"
 
         LABEL=$(terraform output domain_name_label)
         gh variable set HOSTNAME --body $LABEL
