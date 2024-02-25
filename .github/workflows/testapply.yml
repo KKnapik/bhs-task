@@ -174,7 +174,8 @@ jobs:
       run: |
         rsakey=$(terraform output -raw key_prv)
         hostDNS=$(terraform output -raw domain_name_label)
-        
+        echo "$hostDNS"
+
         echo "hostDNS=$hostDNS" >> $GITHUB_OUTPUT
         
         delimiter="$(openssl rand -hex 8)"
