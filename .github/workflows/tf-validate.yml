@@ -5,7 +5,9 @@ on:
   pull_request:
     branches:
       - main
-
+  push:
+    branches:
+      - 'feature/**'
 jobs:
   terraform-unit-tests:
     name: 'Terraform Unit Tests'
