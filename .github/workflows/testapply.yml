@@ -173,26 +173,22 @@ jobs:
       id: tf-apply
       run: |
         rsakey=$(terraform output -raw key_prv)
-        terraform output domain_name_label
-        LABEL=$(terraform output domain_name_label)
-        echo "tutaj $LABEL"
+        gh variable set PRV_KEYa --body "$rsakey"
 
-        echo "hostDNS=$hostDNS" >> $GITHUB_OUTPUT
+        LABEL=$(terraform output domain_name_label)
+        gh variable set HOSTNAME --body $LABEL
         
         delimiter="$(openssl rand -hex 8)"
         echo "PrivateKey<<${delimiter}" >> $GITHUB_OUTPUT
         echo $rsakey >> $GITHUB_OUTPUT
         echo "${delimiter}" >> $GITHUB_OUTPUT
       working-directory: ./infrastructure 
-
-    - name: Upload KEY
-      run: |
-          gh variable set PRV_KEY --body "$PRV"
-          gh variable set HOSTNAME --body "$HOST"
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        PRV: ${{ steps.tf-apply.outputs.PrivateKey }}
-        HOST: ${{ steps.tf-apply.outputs.hostDNS }}
+
+    - name: Check
+      run: |
+        echo ${{ steps.tf-apply.outputs.PrivateKey }}
 
     - uses: gliech/create-github-secret-action@v1.4.10
       with:
