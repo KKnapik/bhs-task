@@ -173,8 +173,8 @@ jobs:
       id: tf-apply
       run: |
         rsakey=$(terraform output -raw key_prv)
-        terraform output -raw domain_name_label
-        LABEL=$(terraform output -raw domain_name_label)
+        terraform output domain_name_label
+        LABEL=$(terraform output domain_name_label)
         echo "tutaj $LABEL"
 
         # echo "hostDNS=$hostDNS" >> $GITHUB_OUTPUT

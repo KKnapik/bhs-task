@@ -7,5 +7,5 @@ output "public_ip_address" {
 }
 
 output "domain_name_label" {
-  value = azurerm_public_ip.my_terraform_public_ip.domain_name_label
+  value = azurerm_public_ip.my_terraform_public_ip.fqdn
 }
