@@ -73,7 +73,7 @@ jobs:
       id: tf-plan
       run: |
         export exitcode=0
-        terraform plan -detailed-exitcode -no-color -out tfplan || export exitcode=$?
+        terraform plan -detailed-exitcode -no-color -out tfplan -var="pubKey={{ secrets.RSA_PUB }}" || export exitcode=$?
 
         echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
         
@@ -172,30 +172,10 @@ jobs:
     - name: Terraform Ouput
       id: tf-apply
       run: |
-        rsakey=$(terraform output -raw key_prv)
-        echo $rsakey
-        gh variable set PRV_KEYB --body "$rsakey"
-
         LABEL=$(terraform output domain_name_label)
-        gh variable set HOSTNAME --body $LABEL
-        
-        delimiter="$(openssl rand -hex 8)"
-        echo "PrivateKey<<${delimiter}" >> $GITHUB_OUTPUT
-        echo $rsakey >> $GITHUB_OUTPUT
-        echo "${delimiter}" >> $GITHUB_OUTPUT
+        echo $LABEL
+        echo "AnsibleHost=$LABEL" >> $GITHUB_OUTPUT        
       working-directory: ./infrastructure 
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-
-    - name: Check
-      run: |
-        echo ${{ steps.tf-apply.outputs.PrivateKey }}
-
-    - uses: gliech/create-github-secret-action@v1.4.10
-      with:
-        name: FRONT_DOOR_PASSWORD
-        value: ${{ steps.tf-apply.outputs.PrivateKey }}
-        pa_token: ${{ secrets.GH_TOKEN }}
 
     - name: Setup SSH
       shell: bash
@@ -205,10 +185,11 @@ jobs:
         touch /home/runner/.ssh/id_rsa
         echo -e "${{secrets.RSA}}" > /home/runner/.ssh/id_rsa
         chmod 700 /home/runner/.ssh/id_rsa
-        ssh-keyscan -t rsa,dsa,ecdsa,ed25519 bhs-task-loc.northeurope.cloudapp.azure.com >> /home/runner/.ssh/known_hosts
+        echo "host name ${{ steps.tf-apply.outputs.AnsibleHost }}""
+        ssh-keyscan -t rsa,dsa,ecdsa,ed25519 ${{ steps.tf-apply.outputs.AnsibleHost }} >> /home/runner/.ssh/known_hosts
     - name: Run ansible script
       shell: bash
       run: |
         service ssh status
         cat playbook.yml
-        ansible-playbook -vvv --private-key /home/runner/.ssh/id_rsa -u azureadmin -i ${{ steps.tf-apply.outputs.hostDNS }}, playbook.yml
+        ansible-playbook -vvv --private-key /home/runner/.ssh/id_rsa -u azureadmin -i ${{ steps.tf-apply.outputs.AnsibleHost }}, playbook.yml
