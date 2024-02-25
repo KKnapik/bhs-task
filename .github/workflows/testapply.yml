@@ -186,5 +186,3 @@ jobs:
         service ssh status
         cat playbook.yml
         ansible-playbook -vvv --private-key /home/runner/.ssh/id_rsa -u azureadmin -i $DNSNAME, playbook.yml
-
-        DNSNAME
