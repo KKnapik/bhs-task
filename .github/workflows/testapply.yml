@@ -172,9 +172,8 @@ jobs:
     - name: Terraform Ouput
       id: tf-apply
       run: |
-        LABEL=$(terraform output domain_name_label)
-        echo $LABEL
-        echo "AnsibleHost=$LABEL" >> $GITHUB_OUTPUT        
+        LABEL=$(terraform output -json | jq -r '.domain_name_label.value')
+        echo "AnsibleHost=$LABEL" >> "$GITHUB_OUTPUT"     
       working-directory: ./infrastructure 
 
     - name: Setup SSH
