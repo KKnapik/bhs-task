@@ -18,5 +18,5 @@ variable "username" {
 
 variable "pubKey" {
   type        = string
-  description = "Public key for vm."
+  description = "Public key for vm"
 }

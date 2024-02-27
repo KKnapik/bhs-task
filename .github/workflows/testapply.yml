@@ -36,20 +36,6 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
-
-    # - name: Azure Access
-    #   id: azure_envs
-    #   env:
-    #     AZCREDS: ${{ secrets.AZURE_CREDENTIALS }}
-    #   run: |
-    #     ARM_CLIENT_ID=$(echo $AZCREDS | jq -r '.["clientId"]')
-    #     ARM_CLIENT_SECRET=$(echo $AZCREDS | jq -r '.["clientSecret"]')
-    #     ARM_TENANT_ID=$(echo $AZCREDS | jq -r '.["tenantId"]')
-    #     ARM_SUBSCRIPTION_ID=$(echo $AZCREDS | jq -r '.["subscriptionId"]')
-    #     echo ARM_CLIENT_ID=$ARM_CLIENT_ID >> $GITHUB_ENV
-    #     echo ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET >> $GITHUB_ENV
-    #     echo ARM_TENANT_ID=$ARM_TENANT_ID >> $GITHUB_ENV
-    #     echo ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID >> $GITHUB_ENV
         
     # Install the latest version of the Terraform CLI
     - name: Setup Terraform
@@ -117,21 +103,21 @@ jobs:
         echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
       
     # If this is a PR post the changes
-    # - name: Push Terraform Output to PR
-    #   if: github.ref != 'refs/heads/main'
-    #   uses: actions/github-script@v6
-    #   env:
-    #     SUMMARY: "${{ steps.tf-plan-string.outputs.summary }}"
-    #   with:
-    #       github-token: ${{ secrets.GITHUB_TOKEN }}
-    #       script: |
-    #         const body = `${process.env.SUMMARY}`;
-    #         github.rest.issues.createComment({
-    #             issue_number: context.issue.number,
-    #             owner: context.repo.owner,
-    #             repo: context.repo.repo,
-    #             body: body
-    #         })
+    - name: Push Terraform Output to PR
+      if: github.ref != 'refs/heads/main'
+      uses: actions/github-script@v6
+      env:
+        SUMMARY: "${{ steps.tf-plan-string.outputs.summary }}"
+      with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const body = `${process.env.SUMMARY}`;
+            github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+            })
                 
   terraform-apply:
     name: 'TEST Terraform Apply'
