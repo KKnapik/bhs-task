@@ -1,4 +1,4 @@
-name: 'TEST Terraform Plan/Apply'
+name: 'Deploy Terraform Plan/Apply'
 
 on:
   workflow_dispatch:
