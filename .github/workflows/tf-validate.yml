@@ -47,7 +47,7 @@ jobs:
       with: 
         directory: ./infrastructure
         framework: terraform
-        soft_fail: true
+        # soft_fail: true
 
     # Upload results to GitHub Advanced Security
     - name: Upload SARIF file
