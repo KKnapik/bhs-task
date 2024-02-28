@@ -12,7 +12,15 @@ The infrastructure setup includes:
 - **Network Components**: Creation of network resources ensuring secure communication.
 - **Access Security**: SSH access with dedicated keys and firewall rules for added security.
 - **Docker & Nginx**: Installation of Docker and deployment of an Nginx container serving a custom webpage.
-- **Public Access**: Assignment of a public IP and DNS configuration for public accessibility.
+- **Public Access**: Assignment of a public IP and DNS configuration for public accessibility.  
+  
+  >>
+  
+
+
+![Alt text](/draw.png?raw=true "Optional Title")
+
+
 
 ## Usage
 
