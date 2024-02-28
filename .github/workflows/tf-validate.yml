@@ -47,13 +47,13 @@ jobs:
       with: 
         directory: ./infrastructure
         framework: terraform
-        soft_fail: true
+        # soft_fail: true
 
     # Upload results to GitHub Advanced Security
-    # - name: Upload SARIF file
-    #   if: success() || failure()
-    #   uses: github/codeql-action/upload-sarif@v2
-    #   with:
-    #     sarif_file: results.sarif
-    #     category: checkov
+    - name: Upload SARIF file
+      if: success() || failure()
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: results.sarif
+        category: checkov
   
